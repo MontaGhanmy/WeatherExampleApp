@@ -1,0 +1,10 @@
+#root {
+  background: #009688;
+}
+#root, .app {
+  min-height: 100%;
+  overflow: hidden;
+}
+.main_wrapper {
+  padding: 10px 15px;
+}

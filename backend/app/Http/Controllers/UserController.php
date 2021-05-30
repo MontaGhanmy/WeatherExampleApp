@@ -23,7 +23,7 @@ class UserController extends Controller
         $user = User::where('email', $request->email)->first();
     
         if ( $user ) {
-            return ["status" => 301, "message" => "user already exists.",];
+            return response()->json(["status" => 409, "message" => "user already exists.",], 409);
         }
         else {
             $user = new User();
@@ -35,16 +35,9 @@ class UserController extends Controller
     
         $user = User::where('email', $request->email)->first();
     
-        if (! $user ) {
-            return ["status" => 301, "message" => "user does not exist.",];
-        }
-        if (! Hash::check($request->password, $user->password)) {
-            return ["status" => 403, "message" => "check your password.",];
-        }
-    
         $token = $user->createToken('main')->plainTextToken;
     
-        return ["status" => 200, "message" => "user created.", "user" => $user, "token" => $token,];
+        return response()->json(["status" => 200, "message" => "user created.", "user" => $user, "token" => $token,], 200);
     
     }
     
@@ -60,10 +53,10 @@ class UserController extends Controller
         $user = User::where('email', $request->email)->first();
     
         if (! $user ) {
-            return response()->json(["status" => 301, "message" => "user does not exist.",], 301);
+            return response()->json(["status" => 404, "message" => "user does not exist.",], 404);
         }
         if (! Hash::check($request->password, $user->password)) {
-            return response()->json(["status" => 403, "message" => "check your password.",], 403);
+            return response()->json(["status" => 401, "message" => "check your password.",], 401);
         }
     
         $token = $user->createToken('main')->plainTextToken;
